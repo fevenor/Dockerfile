@@ -7,10 +7,10 @@
 <?php
 
 //redirect https
-if ($_SERVER["HTTPS"] <> "on"){
-   $xredir="https://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
-   header("Location: ".$xredir);
-}
+//if ($_SERVER["HTTPS"] <> "on"){
+//   $xredir="https://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+//   header("Location: ".$xredir);
+//}
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
