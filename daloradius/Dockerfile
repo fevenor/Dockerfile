@@ -10,7 +10,10 @@ RUN apk add --update lighttpd php-common php-gd fcgi php-cgi php-mysql php-pear 
 
 # Configure Lighttpd
  && set -x \
- && sed -i 's/#   include \"mod_fastcgi.conf\"/include \"mod_fastcgi.conf\"/' /etc/lighttpd/lighttpd.conf
+ && sed -i 's/#   include \"mod_fastcgi.conf\"/include \"mod_fastcgi.conf\"/' /etc/lighttpd/lighttpd.conf \
+ && touch /var/log/daloradius.log \
+ && chown -R lighttpd:lighttpd /var/log/daloradius.log
+
 
 # Get the web
 ADD htdocs /var/www/localhost/htdocs
