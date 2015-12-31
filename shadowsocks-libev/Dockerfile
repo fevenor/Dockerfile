@@ -10,7 +10,7 @@ ENV PORT 11080
 RUN apk add --update $DEPENDENCIES \
 
 # Get the latest code, build and install
- && git clone https://github.com/shadowsocks/shadowsocks-libev.git $BASEDIR \
+ && git clone -b v2.4.3 --depth 1 https://github.com/shadowsocks/shadowsocks-libev.git $BASEDIR \
  && cd $BASEDIR \
  && ./configure \
  && make \
