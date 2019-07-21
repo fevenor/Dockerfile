@@ -66,7 +66,7 @@ func main() {
 					if !judgeDNS(ip, subdomain, isIPv6) {
 						err := updateDNS(ip, key, email, domain, subdomain, isIPv6)
 						if err != nil {
-							app.Logger().Fatal(err)
+							app.Logger().Error(err)
 						}
 					}
 				}
