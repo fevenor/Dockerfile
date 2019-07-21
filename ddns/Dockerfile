@@ -10,6 +10,8 @@ RUN apk add --no-cache git build-base \
 FROM alpine
 LABEL maintainer="fevenor <fevenor@outlook.com>"
 
+RUN apk add --no-cache ca-certificates
+
 # Copy bin
 COPY --from=golang /root/ddns /usr/local/bin
 
