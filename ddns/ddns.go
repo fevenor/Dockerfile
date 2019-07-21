@@ -41,10 +41,12 @@ func main() {
 	app.Get("/", func(ctx iris.Context) {
 		var ip string
 		req := ctx.Request()
-		if req.Header.Get("HTTP_CF_CONNECTING_IP") != "" {
-			ip = req.Header.Get("HTTP_CF_CONNECTING_IP")
-		} else if req.Header.Get("HTTP_X_FORWARDED_FOR") != "" {
-			ip = req.Header.Get("HTTP_X_FORWARDED_FOR")
+		if req.Header.Get("CF-Connecting-IP") != "" {
+			ip = req.Header.Get("CF-Connecting-IP")
+		} else if req.Header.Get("X-Real-Ip") != "" {
+			ip = req.Header.Get("X-Real-Ip")
+		} else if req.Header.Get("X-Forwarded-For") != "" {
+			ip = req.Header.Get("X-Forwarded-For")
 		} else {
 			addrWithPort := ctx.Request().RemoteAddr
 			ip = addrWithPort[0:strings.LastIndex(addrWithPort, ":")]
@@ -77,7 +79,11 @@ func main() {
 		}
 	})
 
-	app.Run(iris.Addr(":"+port), iris.WithoutServerError(iris.ErrServerClosed))
+	app.Configure(iris.WithoutServerError(iris.ErrServerClosed),
+		iris.WithRemoteAddrHeader("X-Real-Ip"),
+		iris.WithRemoteAddrHeader("X-Forwarded-For"),
+		iris.WithRemoteAddrHeader("CF-Connecting-IP"))
+	app.Run(iris.Addr(":" + port))
 }
 
 func judgeDNS(ip string, subdomain string, isIPv6 bool) bool {
