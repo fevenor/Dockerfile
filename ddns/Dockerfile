@@ -11,7 +11,7 @@ LABEL maintainer="fevenor <fevenor@outlook.com>"
 RUN apk add --no-cache ca-certificates
 
 # Copy bin
-COPY --from=golang /go/src/ddns/ddns /usr/local/bin
+COPY --from=golang /go/src/ddns/ddns /usr/local/bin/ddns
 
 # DDNS environment variables
 ENV PORT 80
