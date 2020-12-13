@@ -1,11 +1,10 @@
 FROM golang:alpine AS golang
 
 # Build
-ADD ddns.go /root/
-RUN apk add --no-cache git build-base \
-    && cd /root \
-    && go get -d \
-    && go build -o ddns
+ADD ddns.go /go/src/ddns
+WORKDIR /go/src/ddns
+RUN go get ddns
+RUN go install
 
 FROM alpine
 LABEL maintainer="fevenor <fevenor@outlook.com>"
@@ -13,12 +12,11 @@ LABEL maintainer="fevenor <fevenor@outlook.com>"
 RUN apk add --no-cache ca-certificates
 
 # Copy bin
-COPY --from=golang /root/ddns /usr/local/bin
+COPY --from=golang /go/bin/ddns /usr/local/bin
 
 # DDNS environment variables
 ENV PORT 80
 ENV CF_API_KEY example
-ENV CF_API_EMAIL admin@example.com
 ENV DOMAIN example.com
 
 EXPOSE $PORT/tcp
