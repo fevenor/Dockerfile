@@ -9,9 +9,9 @@ import (
 	"time"
 
 	"github.com/cloudflare/cloudflare-go"
-	"github.com/kataras/iris"
-	"github.com/kataras/iris/middleware/logger"
-	"github.com/kataras/iris/middleware/recover"
+	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/middleware/logger"
+	"github.com/kataras/iris/v12/middleware/recover"
 )
 
 var ipv4 map[string]cloudflare.DNSRecord
@@ -21,7 +21,6 @@ var app *iris.Application
 func main() {
 	port := os.Getenv("PORT")
 	key := os.Getenv("CF_API_KEY")
-	email := os.Getenv("CF_API_EMAIL")
 	domain := os.Getenv("DOMAIN")
 	ipv4 = make(map[string]cloudflare.DNSRecord, 5)
 	ipv6 = make(map[string]cloudflare.DNSRecord, 5)
@@ -66,7 +65,7 @@ func main() {
 						isIPv6 = true
 					}
 					if !judgeDNS(ip, subdomain, isIPv6) {
-						err := updateDNS(ip, key, email, domain, subdomain, isIPv6)
+						err := updateDNS(ip, key, domain, subdomain, isIPv6)
 						if err != nil {
 							app.Logger().Error(err)
 						}
@@ -110,10 +109,10 @@ func judgeDNS(ip string, subdomain string, isIPv6 bool) bool {
 	return false
 }
 
-func updateDNS(ip string, key, email string, domain, subdomain string, isIPv6 bool) error {
+func updateDNS(ip string, key string, domain, subdomain string, isIPv6 bool) error {
 
 	// Create Cloudflare API
-	api, err := cloudflare.New(key, email)
+	api, err := cloudflare.NewWithAPIToken(key)
 	app.Logger().Info("Connect cloudflare")
 	if err != nil {
 		return fmt.Errorf("Auth failed: %v", err)
