@@ -3,7 +3,7 @@ FROM golang:1.15.6 AS golang
 # Build
 ADD . /go/src/ddns
 WORKDIR /go/src/ddns
-RUN CGO_ENABLED=0 go build -o ddns
+RUN CGO_ENABLED=0 go build -o ddns -a -ldflags '-extldflags "-static"' .
 
 FROM alpine
 LABEL maintainer="fevenor <fevenor@outlook.com>"
