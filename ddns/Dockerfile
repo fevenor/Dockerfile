@@ -1,10 +1,9 @@
 FROM golang:1.15.6 AS golang
 
 # Build
-ADD ddns.go /go/src/ddns/
+ADD . /go/src/ddns
 WORKDIR /go/src/ddns
-RUN go get ddns
-RUN go install
+RUN go build
 
 FROM alpine
 LABEL maintainer="fevenor <fevenor@outlook.com>"
