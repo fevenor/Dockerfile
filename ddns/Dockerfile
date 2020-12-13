@@ -1,4 +1,4 @@
-FROM golang:alpine AS golang
+FROM golang:1.15.6 AS golang
 
 # Build
 ADD ddns.go /go/src/ddns/
